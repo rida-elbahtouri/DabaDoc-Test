@@ -7,6 +7,8 @@ class ApplicationController < ActionController::API
       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
         head :unauthorized
       end
+    else
+      head :unauthorized
     end
   end
 
