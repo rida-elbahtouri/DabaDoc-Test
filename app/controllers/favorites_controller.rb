@@ -1,5 +1,4 @@
 class FavoritesController < ApplicationController
-  before_action :set_favorite, only: %i[destroy]
   before_action :process_token
   # GET /favorites
   def index
@@ -10,7 +9,7 @@ class FavoritesController < ApplicationController
 
   # POST /favorites
   def create
-    @favorite = Favorite.new(user_id:current_user.id,question_id:favorite_params[:question_id])
+    @favorite = Favorite.new(user_id: current_user.id, question_id: favorite_params[:question_id])
 
     if @favorite.save
       render json: @favorite, status: :created, location: @favorite
@@ -20,19 +19,15 @@ class FavoritesController < ApplicationController
   end
 
   # DELETE /favorites/1
-  def destroy
+  def delete_from_fav
+    @favorite = current_user.favorites.find_by(question_id: params[:question_id])
     @favorite.destroy
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_favorite
-    @favorite = Favorite.find(params[:id])
-  end
-
   # Only allow a trusted parameter "white list" through.
   def favorite_params
-    params.require(:favorite).permit(:question_id, :user_id)
+    params.require(:favorite).permit(:question_id)
   end
 end

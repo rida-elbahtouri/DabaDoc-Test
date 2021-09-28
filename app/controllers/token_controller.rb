@@ -5,4 +5,8 @@ class TokenController < ApplicationController
   def checkToken
     render status: 200
   end
+
+  def getUser
+    render json: current_user.to_json
+  end
 end

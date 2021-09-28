@@ -2,10 +2,17 @@ class QuestionsController < ApplicationController
   before_action :process_token
 
   # GET /questions
+
+  def show
+    @q = Question.find(params[:id])
+    fav = current_user.favorite_questions.include?(@q)
+    render json: { question: @q, fav: fav }, include: ['answers']
+  end
+
   def index
     @questions = if params[:lat].present? && params[:long].present?
 
-                   Question.near([params[:lat], params[:long]], 50, order: :distance)
+                   Question.near([params[:lat], params[:long]], 500, order: :distance, units: :km)
                  else
                    Question.all
                  end

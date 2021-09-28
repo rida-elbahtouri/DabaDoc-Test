@@ -1,13 +1,5 @@
 class AnswersController < ApplicationController
-  before_action :set_answer, only: %i[show update destroy]
   before_action :process_token
-
-  # GET /answers/question_id
-  def show
-    @q = Question.find(params[:id])
-
-    render json: @q.answers
-  end
 
   # POST /answers
   def create
@@ -38,7 +30,7 @@ class AnswersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_answer
-    @answer = current_user.answers.find(params[:id])
+    @answer = Answer.find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.

@@ -1,24 +1,120 @@
-# README
+# TechStore
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This repo includes the back-end of my [DabaDoc](https://github.com/rida-elbahtouri/DabaDoc-FrontEnd) application.
 
-Things you may want to cover:
+## Project features
 
-* Ruby version
+#### User Can
 
-* System dependencies
+- Create an account
+- Exolore List of questions based on distance
+- Add questions to Favorites list
+- Edit/Delete questions from Favorites list
+- Answer questions
+- Get list of favorites questions
+- sign in to his account
 
-* Configuration
+## Built With
 
-* Database creation
+- Ruby v2.7.1
+- Ruby on Rails v6.0.3
+- Desvise
+- Jwt
 
-* Database initialization
+## Getting Started
 
-* How to run the test suite
+To get a local copy up and running follow these simple example steps.
 
-* Services (job queues, cache servers, search engines, etc.)
+### Prerequisites
 
-* Deployment instructions
+Ruby: 2.7.1
 
-* ...
+Rails: v6.0.3
+
+### Clone the Project
+
+```
+$ git clone https://github.com/rida-elbahtouri/DabaDoc-Test.git
+
+$ cd DabaDoc-Test
+```
+
+### Setup
+
+Instal gems with:
+
+```
+bundle install
+```
+
+Setup database with:
+
+```
+   rails db:migrate
+```
+
+### Usage
+
+Start server with:
+
+```
+    rails server
+```
+
+### Usage
+
+##### Post your email and password as json to '/users/' to Sign up
+
+###### Json format
+
+```
+    {
+        "user":{
+            "email":email@email.com,
+            "password":"password"
+        }
+    }
+```
+
+##### Post your email and password as json to '/users/sign_in' to Sign in, using the same json format
+
+##### Use the giving token as athenticaton header in all the next requests
+
+##### Post to '/questions/',to create questions
+
+###### Json format
+
+```
+    {
+        "question":{
+        "title":"title",
+        "content":"content",
+        "latitude":11.111111,
+        "longitude":-22.222222
+    }
+    }
+```
+
+##### To add questions to favorites list, post question_id to '/favorites/
+
+##### To Delete question from your favorites list, send a delete request with question_id as param
+
+##### To get answers send get request to '/questions.question_id'
+
+## Developer
+
+👤 **Rida Elbahtouri**
+
+- [Github](https://github.com/rida-elbahtouri)
+- [Twitter](https://twitter.com/RElbahtouri)
+- [Linkedin](https://www.linkedin.com/in/rida-elbahtouri/)
+
+## 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+Feel free to check the <a href="https://github.com/rida-elbahtouri/DabaDoc-Test/issues" target="_blank">issues page</a>.
+
+## Show your support
+
+Give a ⭐️ if you like this project!
