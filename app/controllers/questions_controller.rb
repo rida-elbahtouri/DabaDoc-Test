@@ -1,11 +1,14 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: %i[show update destroy]
   before_action :process_token
 
   # GET /questions
   def index
-    @questions = Question.all
+    @questions = if params[:lat].present? && params[:long].present?
 
+                   Question.near([params[:lat], params[:long]], 50, order: :distance)
+                 else
+                   Question.all
+                 end
     render json: @questions
   end
 
@@ -22,6 +25,7 @@ class QuestionsController < ApplicationController
 
   # PATCH/PUT /questions/1
   def update
+    @question = current_user.questions.find(params[:id])
     if @question.update(question_params)
       render json: @question
     else
@@ -31,18 +35,14 @@ class QuestionsController < ApplicationController
 
   # DELETE /questions/1
   def destroy
+    @question = current_user.questions.find(params[:id])
     @question.destroy
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_question
-    @question = current_user.questions.find(params[:id])
-  end
-
   # Only allow a trusted parameter "white list" through.
   def question_params
-    params.require(:question).permit(:title, :content, :location)
+    params.require(:question).permit(:title, :content, :latitude, :longitude)
   end
 end

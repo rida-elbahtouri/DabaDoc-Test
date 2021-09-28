@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_28_060748) do
+ActiveRecord::Schema.define(version: 2021_09_28_092619) do
 
   create_table "answers", force: :cascade do |t|
     t.text "content"
@@ -33,10 +33,11 @@ ActiveRecord::Schema.define(version: 2021_09_28_060748) do
   create_table "questions", force: :cascade do |t|
     t.string "title"
     t.text "content"
-    t.string "location"
     t.integer "auther_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "users", force: :cascade do |t|
