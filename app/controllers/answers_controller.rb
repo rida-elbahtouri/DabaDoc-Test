@@ -1,21 +1,17 @@
 class AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :update, :destroy]
+  before_action :set_answer, only: %i[show update destroy]
+  before_action :process_token
 
-  # GET /answers
-  def index
-    @answers = Answer.all
-
-    render json: @answers
-  end
-
-  # GET /answers/1
+  # GET /answers/question_id
   def show
-    render json: @answer
+    @q = Question.find(params[:id])
+
+    render json: @q.answers
   end
 
   # POST /answers
   def create
-    @answer = Answer.new(answer_params)
+    @answer = current_user.answers.new(answer_params)
 
     if @answer.save
       render json: @answer, status: :created, location: @answer
@@ -39,13 +35,14 @@ class AnswersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_answer
-      @answer = Answer.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def answer_params
-      params.require(:answer).permit(:content, :question_id, :auther_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_answer
+    @answer = current_user.answers.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def answer_params
+    params.require(:answer).permit(:content, :question_id)
+  end
 end

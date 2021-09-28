@@ -1,33 +1,19 @@
 class FavoritesController < ApplicationController
-  before_action :set_favorite, only: [:show, :update, :destroy]
-
+  before_action :set_favorite, only: %i[destroy]
+  before_action :process_token
   # GET /favorites
   def index
-    @favorites = Favorite.all
+    @favorites = current_user.favorite_questions
 
     render json: @favorites
   end
 
-  # GET /favorites/1
-  def show
-    render json: @favorite
-  end
-
   # POST /favorites
   def create
-    @favorite = Favorite.new(favorite_params)
+    @favorite = Favorite.new(user_id:current_user.id,question_id:favorite_params[:question_id])
 
     if @favorite.save
       render json: @favorite, status: :created, location: @favorite
-    else
-      render json: @favorite.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /favorites/1
-  def update
-    if @favorite.update(favorite_params)
-      render json: @favorite
     else
       render json: @favorite.errors, status: :unprocessable_entity
     end
@@ -39,13 +25,14 @@ class FavoritesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_favorite
-      @favorite = Favorite.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def favorite_params
-      params.require(:favorite).permit(:question_id, :user_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_favorite
+    @favorite = Favorite.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def favorite_params
+    params.require(:favorite).permit(:question_id, :user_id)
+  end
 end

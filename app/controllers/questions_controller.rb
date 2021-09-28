@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
-  before_action :set_question, only: [:show, :update, :destroy]
+  before_action :set_question, only: %i[show update destroy]
+  before_action :process_token
 
   # GET /questions
   def index
@@ -8,14 +9,9 @@ class QuestionsController < ApplicationController
     render json: @questions
   end
 
-  # GET /questions/1
-  def show
-    render json: @question
-  end
-
   # POST /questions
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
 
     if @question.save
       render json: @question, status: :created, location: @question
@@ -39,13 +35,14 @@ class QuestionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_question
-      @question = Question.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def question_params
-      params.require(:question).permit(:title, :content, :location)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_question
+    @question = current_user.questions.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def question_params
+    params.require(:question).permit(:title, :content, :location)
+  end
 end
