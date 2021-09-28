@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :favorites
+  resources :answers
+  resources :questions
   devise_for :users,
              controllers: {
                registrations: :registrations,
