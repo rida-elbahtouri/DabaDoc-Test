@@ -20,6 +20,7 @@ This repo includes the back-end of my [DabaDoc](https://github.com/rida-elbahtou
 - Ruby on Rails v6.0.3
 - Desvise
 - Jwt
+- Docker
 
 ## Getting Started
 
@@ -28,6 +29,8 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 Ruby: 2.7.1
+
+Docker
 
 Rails: v6.0.3
 
@@ -41,16 +44,18 @@ $ cd DabaDoc-Test
 
 ### Setup
 
-Instal gems with:
+Build docker image:
 
 ```
-bundle install
+docker-compose build
 ```
 
 Setup database with:
 
 ```
-   rails db:migrate
+   docker-compose run web rails db:create
+   docker-compose run web rails db:migrate
+
 ```
 
 ### Usage
@@ -58,7 +63,8 @@ Setup database with:
 Start server with:
 
 ```
-    rails server
+    docker-compose up
+
 ```
 
 ### Usage
